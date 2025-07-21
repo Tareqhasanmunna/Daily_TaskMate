@@ -39,26 +39,17 @@ class _HomeScreen extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-
               child: Text(
                 "Let's Start....",
                 style: TextStyle(fontSize: 50, color: Colors.black54),
-
-              child: Text("hi",
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.black
-              ),
               ),
             ),
 
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Container(
-              child: Text("Let's Start....",
-              style: TextStyle(
-                fontSize: 50,
-                color: Colors.black54
-              ),
+              child: Text(
+                "Let's Start....",
+                style: TextStyle(fontSize: 50, color: Colors.black54),
               ),
             ),
 
