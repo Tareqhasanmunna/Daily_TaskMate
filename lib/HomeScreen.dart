@@ -45,14 +45,6 @@ class _HomeScreen extends State<HomeScreen> {
               ),
             ),
 
-            SizedBox(height: 10),
-            Container(
-              child: Text(
-                "Let's Start....",
-                style: TextStyle(fontSize: 50, color: Colors.black54),
-              ),
-            ),
-
             SizedBox(height: 30),
 
             Row(
