@@ -66,4 +66,3 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.dailyTaskmate',
   );
 }
-
