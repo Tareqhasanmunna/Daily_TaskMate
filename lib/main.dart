@@ -1,7 +1,7 @@
 import 'package:daily_taskmate/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_taskmate/HomeScreen.dart';
+import 'package:daily_taskmate/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
