@@ -40,6 +40,14 @@ class _HomeScreen extends State<HomeScreen> {
           children: [
             Container(
               child: Text(
+                "hi",
+                style: TextStyle(fontSize: 30, color: Colors.black),
+              ),
+            ),
+
+            SizedBox(height: 10),
+            Container(
+              child: Text(
                 "Let's Start....",
                 style: TextStyle(fontSize: 50, color: Colors.black54),
               ),
