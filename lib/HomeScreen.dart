@@ -34,9 +34,16 @@ class _HomeScreen extends State<HomeScreen> {
               // const Color.fromARGB(255, 165, 235, 202),
               // Colors.white,
               // const Color.fromARGB(255, 116, 152, 120),
+
               Colors.white,
               Colors.white54,
               Colors.white,
+
+
+            Colors.white,
+            Colors.white54,
+            Colors.white
+
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -305,5 +312,74 @@ class _HomeScreen extends State<HomeScreen> {
         ),
       ),
     );
+
+  openBox(){
+    return showDialog(
+      context: context, 
+      builder: (context)=>AlertDialog(
+      content: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },child: Icon(Icons.cancel),
+                  ),
+        
+                  SizedBox(width: 60.0,),
+                  Text("Add ToDo Task",
+                  style: TextStyle(
+                    color: Colors.greenAccent.shade400
+                  ),
+                  ),
+                ],
+              ),
+        
+              SizedBox(height: 20.0,),
+              Text("Add Text"),
+              SizedBox(height: 20,),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 2.0,
+                  )
+                ),
+                child: TextField(
+                  controller: todoController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter the task",
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Center(
+                child: Container(
+                  width: 100,
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.greenAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text("Add",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      ));
   }
 }
