@@ -21,7 +21,7 @@ class _HomeScreen extends State<HomeScreen> {
       Personal
           ? "Personal"
           : College
-          ? "Collage"
+          ? "College"
           : "Office",
     );
     setState(() {});
@@ -45,10 +45,28 @@ class _HomeScreen extends State<HomeScreen> {
                     return CheckboxListTile(
                       activeColor: Colors.greenAccent.shade700,
                       title: Text(docSnap["work"]),
-                      value: suggest,
-                      onChanged: (newValue) {
+                      value: docSnap["Yes"],
+                      onChanged: (newValue) async {
+                        await DatabaseService().tickMethod(
+                          docSnap["Id"],
+                          Personal
+                              ? "Personal"
+                              : College
+                              ? "College"
+                              : "Office",
+                        );
                         setState(() {
-                          suggest = newValue!;
+                          Future.delayed(
+                            Duration(seconds: 2),
+                            () => DatabaseService().removeMethod(
+                              docSnap["Id"],
+                              Personal
+                                  ? "Personal"
+                                  : College
+                                  ? "College"
+                                  : "Office",
+                            ),
+                          );
                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,
@@ -77,14 +95,7 @@ class _HomeScreen extends State<HomeScreen> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              // const Color.fromARGB(255, 165, 235, 202),
-              // Colors.white,
-              // const Color.fromARGB(255, 116, 152, 120),
-              Colors.white,
-              Colors.white54,
-              Colors.white,
-            ],
+            colors: [Colors.white, Colors.white54, Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -280,6 +291,7 @@ class _HomeScreen extends State<HomeScreen> {
                         "work": task,
                         "Id": id,
                         "timestamp": DateTime.now(),
+                        "Yes": false,
                       };
 
                       try {
