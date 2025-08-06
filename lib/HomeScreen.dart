@@ -21,7 +21,7 @@ class _HomeScreen extends State<HomeScreen> {
       Personal
           ? "Personal"
           : College
-          ? "Collage"
+          ? "College"
           : "Office",
     );
     setState(() {});
@@ -45,10 +45,28 @@ class _HomeScreen extends State<HomeScreen> {
                     return CheckboxListTile(
                       activeColor: Colors.greenAccent.shade700,
                       title: Text(docSnap["work"]),
-                      value: suggest,
-                      onChanged: (newValue) {
+                      value: docSnap["Yes"],
+                      onChanged: (newValue) async {
+                        await DatabaseService().tickMethod(
+                          docSnap["Id"],
+                          Personal
+                              ? "Personal"
+                              : College
+                              ? "College"
+                              : "Office",
+                        );
                         setState(() {
-                          suggest = newValue!;
+                          Future.delayed(
+                            Duration(seconds: 2),
+                            () => DatabaseService().removeMethod(
+                              docSnap["Id"],
+                              Personal
+                                  ? "Personal"
+                                  : College
+                                  ? "College"
+                                  : "Office",
+                            ),
+                          );
                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,
@@ -65,7 +83,7 @@ class _HomeScreen extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 4, 130, 69),
+        backgroundColor: Colors.greenAccent.shade700,
         onPressed: () {
           openBox();
         },
@@ -77,14 +95,7 @@ class _HomeScreen extends State<HomeScreen> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              // const Color.fromARGB(255, 165, 235, 202),
-              // Colors.white,
-              // const Color.fromARGB(255, 116, 152, 120),
-              Colors.white,
-              Colors.white54,
-              Colors.white,
-            ],
+            colors: [Colors.white, Colors.white54, Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -116,7 +127,7 @@ class _HomeScreen extends State<HomeScreen> {
                             vertical: 5.0,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent.shade400,
+                            color: Colors.greenAccent.shade700,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -151,7 +162,7 @@ class _HomeScreen extends State<HomeScreen> {
                             vertical: 5.0,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent.shade400,
+                            color: Colors.greenAccent.shade700,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -186,7 +197,7 @@ class _HomeScreen extends State<HomeScreen> {
                             vertical: 5.0,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent.shade400,
+                            color: Colors.greenAccent.shade700,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -239,10 +250,10 @@ class _HomeScreen extends State<HomeScreen> {
                       child: Icon(Icons.cancel),
                     ),
 
-                    SizedBox(width: 60.0),
+                    SizedBox(width: 40.0),
                     Text(
                       "Add ToDo Task",
-                      style: TextStyle(color: Colors.greenAccent.shade400),
+                      style: TextStyle(color: Colors.greenAccent.shade700),
                     ),
                   ],
                 ),
@@ -280,6 +291,7 @@ class _HomeScreen extends State<HomeScreen> {
                         "work": task,
                         "Id": id,
                         "timestamp": DateTime.now(),
+                        "Yes": false,
                       };
 
                       try {
@@ -303,13 +315,13 @@ class _HomeScreen extends State<HomeScreen> {
                       width: 100,
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.greenAccent,
+                        color: Colors.greenAccent.shade700,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
                         child: Text(
                           "Add",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
