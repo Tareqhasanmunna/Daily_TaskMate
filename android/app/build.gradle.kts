@@ -7,11 +7,12 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
-
+//flutter.ndkVersion
 android {
     namespace = "com.example.daily_taskmate"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
+
 
 
     compileOptions {
