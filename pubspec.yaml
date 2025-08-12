@@ -37,8 +37,12 @@ dependencies:
   firebase_core: any 
   cloud_firestore: any 
   random_string: any 
+  firebase_auth: ^6.0.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+
+
   flutter_test:
     sdk: flutter
 
@@ -53,6 +57,12 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icons/dailytaskmate_icon.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is
