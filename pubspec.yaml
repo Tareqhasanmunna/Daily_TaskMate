@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: any 
   cloud_firestore: any 
+  random_string: any 
 
 dev_dependencies:
   flutter_test:
