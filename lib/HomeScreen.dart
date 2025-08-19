@@ -16,9 +16,33 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> categories = [];
   TextEditingController todoController = TextEditingController();
   Stream<QuerySnapshot>? todoStream;
+
+  @override
+  void initState() {
+    super.initState();
+    final user = FirebaseAuth.instance.currentUser!;
+    dbService = DatabaseService(user.email!);
+    loadCategories();
+  }
+
+  void loadCategories() async {
+    final snapshot = await dbService.getCategories();
+    setState(() {
+      categories = snapshot.docs.map((doc) => doc.id).toList();
+      if (categories.isNotEmpty) {
+        selectedCategory = categories[0];
+        loadTasks();
+      }
+    });
+  }
+
+  void deleteCategory(String categoryName) async {
+    await dbService.deleteCategory(categoryName);
+    loadCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("Daily TaskMate"),
@@ -36,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           FloatingActionButton(
             heroTag: "addTask",
-            onPressed: () { },
+            onPressed: () {},
             child: Icon(Icons.add),
           ),
           SizedBox(height: 10),
@@ -54,6 +78,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-    
   }
-} 
+}
