@@ -12,7 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false;
-  bool isLogin = true; // true = login, false = signup
+  bool isLogin = true;
   bool passwordVisible = false;
 
   @override
