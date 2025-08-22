@@ -72,4 +72,13 @@ class DatabaseService {
         .doc(taskId)
         .delete();
   }
+
+  Future<void> deleteCategory(String category) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('categories')
+        .doc(category)
+        .delete();
+  }
 }

@@ -60,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           FloatingActionButton(
             heroTag: "addTask",
+
             onPressed: () {
                             showDialog(
                 context: context,
@@ -94,11 +95,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
+
+            onPressed: () {},
+
             child: Icon(Icons.add),
           ),
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "addCategory",
+
             onPressed: () {
                             TextEditingController categoryController =
                   TextEditingController();
@@ -132,6 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
+
+            onPressed: () {},
+
             child: Icon(Icons.create_new_folder),
           ),
         ],
@@ -141,6 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
           categoryList(),
           Expanded(child: taskList()),
         ],
+
       ),
     );
   }
@@ -186,6 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
+
       ),
     );
   }
