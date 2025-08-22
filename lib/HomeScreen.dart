@@ -60,13 +60,86 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           FloatingActionButton(
             heroTag: "addTask",
+
+            onPressed: () {
+                            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text("Add Task"),
+                  content: TextField(
+                    controller: todoController,
+                    decoration: InputDecoration(hintText: "Enter task..."),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        if (todoController.text.isNotEmpty &&
+                            selectedCategory.isNotEmpty) {
+                          await dbService.addTask(
+                            selectedCategory,
+                            todoController.text,
+                          );
+                          todoController.clear();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text("Add"),
+                    ),
+                  ],
+                ),
+              );
+            },
+
             onPressed: () {},
+
             child: Icon(Icons.add),
           ),
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "addCategory",
+
+            onPressed: () {
+                            TextEditingController categoryController =
+                  TextEditingController();
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text("Add Category"),
+                  content: TextField(
+                    controller: categoryController,
+                    decoration: InputDecoration(hintText: "Enter category..."),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        if (categoryController.text.isNotEmpty) {
+
+                          await dbService.addCategory(categoryController.text);
+                          Navigator.pop(context);
+                          loadCategories();
+                        }
+                      },
+                      child: Text("Add"),
+                    ),
+                  ],
+                ),
+              );
+            },
+
             onPressed: () {},
+
             child: Icon(Icons.create_new_folder),
           ),
         ],
@@ -76,7 +149,87 @@ class _HomeScreenState extends State<HomeScreen> {
           categoryList(),
           Expanded(child: taskList()),
         ],
+
       ),
+    );
+  }
+
+    Widget categoryList() {
+    return SizedBox(
+      height: 60,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          return GestureDetector(
+            onLongPress: () {
+
+              deleteCategory(category);
+            },
+            onTap: () {
+              setState(() {
+                selectedCategory = category;
+                loadTasks();
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.all(8),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: selectedCategory == category
+                    ? Colors.blue
+                    : Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    color: selectedCategory == category
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+
+      ),
+    );
+  }
+
+    Widget taskList() {
+    if (todoStream == null) return Center(child: Text("No category selected"));
+
+    return StreamBuilder(
+      stream: todoStream,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
+
+        final tasks = snapshot.data!.docs;
+        return ListView.builder(
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            final task = tasks[index];
+            return ListTile(
+              title: Text(task['title']),
+              trailing: Checkbox(
+                value: task['isDone'],
+                onChanged: (val) async {
+                  // ==== BACKEND WRITER 2 (Update Task Status/Delete) ====
+                  if (val == true) {
+                    await dbService.updateTask(selectedCategory, task.id, true);
+                    await dbService.deleteTask(selectedCategory, task.id);
+                  }
+                },
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
