@@ -175,6 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xfffdf0d5),
       appBar: AppBar(
         title: Text(
           "Daily TaskMate",
