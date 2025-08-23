@@ -12,7 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false;
-  bool isLogin = true; // true = login, false = signup
+  bool isLogin = true;
   bool passwordVisible = false;
 
   @override
@@ -78,15 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         );
         return;
       }
-
-      UserCredential cred = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-
-      await cred.user?.sendEmailVerification();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Account created. Verification email sent.")),
-      );
     } on FirebaseAuthException catch (e) {
       String message = "Sign up failed: ${e.code} - ${e.message}";
       if (e.code == 'email-already-in-use')
@@ -105,81 +96,6 @@ class _LoginPageState extends State<LoginPage> {
     } finally {
       if (mounted) setState(() => isLoading = false);
     }
-  }
-
-  Future<void> resetPassword() async {
-    final email = emailController.text.trim();
-    if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Enter your email to reset password")),
-      );
-      return;
-    }
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Password reset email sent.")));
-    } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: ${e.message}")));
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
-    }
-  }
-
-  void showResetPasswordDialog() {
-    final resetEmailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Reset Password"),
-        content: TextField(
-          controller: resetEmailController,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(hintText: "Enter your email"),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              resetEmailController.dispose();
-            },
-            child: Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final email = resetEmailController.text.trim();
-              if (email.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Please enter your email")),
-                );
-                return;
-              }
-              try {
-                await FirebaseAuth.instance.sendPasswordResetEmail(
-                  email: email,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Password reset email sent.")),
-                );
-                Navigator.pop(context);
-                resetEmailController.dispose();
-              } on FirebaseAuthException catch (e) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text("Error: ${e.message}")));
-              }
-            },
-            child: Text("Send"),
-          ),
-        ],
-      ),
-    );
   }
 
   @override

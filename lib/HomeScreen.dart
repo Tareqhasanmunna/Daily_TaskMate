@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> loadCategories() async {
     final cats = await dbService.getCategories();
-    if (!mounted) return; // Prevent setState after dispose
+    if (!mounted) return;
 
     setState(() {
       categories = cats;
@@ -167,6 +167,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> deleteCategory(String category) async {
+    await dbService.deleteCategory(category);
+    await loadCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,7 +218,6 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Good to see you!", style: TextStyle(fontSize: 40)),
-
             SizedBox(height: 20),
             categories.isEmpty
                 ? Center(child: Text("No categories found. Add some!"))
@@ -222,34 +226,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: categories.map((cat) {
                         final isSelected = cat == selectedCategory;
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedCategory = cat;
-                              loadTasks();
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 8,
-                            ),
-                            margin: EdgeInsets.only(right: 8),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? const Color(0xff780000)
-                                  : Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              cat,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? const Color(0xfffdf0d5)
-                                    : const Color(0xff003049),
+                        return Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedCategory = cat;
+                                  loadTasks();
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                  vertical: 8,
+                                ),
+                                margin: EdgeInsets.only(right: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color(0xff780000)
+                                      : Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  cat,
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? const Color(0xfffdf0d5)
+                                        : const Color(0xff003049),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => deleteCategory(cat),
+                            ),
+                          ],
                         );
                       }).toList(),
                     ),
